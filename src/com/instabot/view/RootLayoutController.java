@@ -2,11 +2,13 @@ package com.instabot.view;
 
 import java.io.File;
 
+import com.instabot.config.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import com.instabot.MainApp;
+import org.springframework.stereotype.Component;
 
 /**
  * The controller for the root layout. The root layout provides the basic
@@ -15,7 +17,8 @@ import com.instabot.MainApp;
  * 
  * @author Marco Jakob
  */
-public class RootLayoutController {
+@Component
+public class RootLayoutController extends AbstractController {
 
     // Reference to the main application
     private MainApp mainApp;

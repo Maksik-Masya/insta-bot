@@ -1,5 +1,6 @@
 package com.instabot.view;
 
+import com.instabot.config.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,10 +13,12 @@ import com.instabot.util.DateUtil;
 import org.brunocvcunha.instagram4j.Instagram4j;
 import org.brunocvcunha.instagram4j.requests.InstagramSearchUsernameRequest;
 import org.brunocvcunha.instagram4j.requests.payload.InstagramSearchUsernameResult;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-public class PersonOverviewController {
+@Component
+public class PersonOverviewController extends AbstractController {
     @FXML
     private TableView<Person> personTable;
     @FXML

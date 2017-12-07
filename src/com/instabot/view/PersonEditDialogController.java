@@ -1,5 +1,6 @@
 package com.instabot.view;
 
+import com.instabot.config.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -8,13 +9,15 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import com.instabot.model.Person;
 import com.instabot.util.DateUtil;
+import org.springframework.stereotype.Component;
 
 /**
  * Dialog to edit details of a person.
  * 
  * @author Marco Jakob
  */
-public class PersonEditDialogController {
+@Component
+public class PersonEditDialogController extends AbstractController {
 
     @FXML
     private TextField firstNameField;

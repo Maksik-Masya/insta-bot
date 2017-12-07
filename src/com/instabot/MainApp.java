@@ -1,13 +1,14 @@
 package com.instabot;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import com.instabot.config.ApplicationConfig;
+import com.instabot.config.SpringFXMLLoader;
+import com.instabot.view.LoginDialogController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -27,6 +28,11 @@ import com.instabot.view.BirthdayStatisticsController;
 import com.instabot.view.PersonEditDialogController;
 import com.instabot.view.PersonOverviewController;
 import com.instabot.view.RootLayoutController;
+import org.brunocvcunha.instagram4j.Instagram4j;
+import org.brunocvcunha.instagram4j.requests.InstagramSearchUsernameRequest;
+import org.brunocvcunha.instagram4j.requests.payload.InstagramSearchUsernameResult;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainApp extends Application {
 
@@ -73,6 +79,41 @@ public class MainApp extends Application {
         initRootLayout();
 
         showPersonOverview();
+//
+        Instagram4j instagram = loginUser();
+
+//        if (instagram != null) {
+//            setUserCredentials(instagram);
+//
+//            InstagramSearchUsernameResult userResult = null;
+//            try {
+//                userResult = instagram.sendRequest(new InstagramSearchUsernameRequest("maksik_masya"));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println("ID for @github is " + userResult.getUser().getPk());
+//            System.out.println("Number of followers: " + userResult.getUser().getFollower_count());
+
+//        }
+    }
+
+    private Instagram4j loginUser() {
+        LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load("/com/instabot/view/LoginDialog.fxml");
+        AnchorPane page = (AnchorPane) controller.getView();
+
+        // Create the dialog Stage.
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Login User");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        controller.setDialogStage(dialogStage);
+
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
+
+        return controller.getInstagram();
     }
 
     /**
@@ -80,24 +121,17 @@ public class MainApp extends Application {
      * person file.
      */
     public void initRootLayout() {
-        try {
-            // Load root layout from fxml file.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/com/instabot/view/RootLayout.fxml"));
-            rootLayout = loader.load();
+        RootLayoutController controller = (RootLayoutController) SpringFXMLLoader.load("/com/instabot/view/RootLayout.fxml");
+        rootLayout = (BorderPane) controller.getView();
 
-            // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
+        // Show the scene containing the root layout.
+        Scene scene = new Scene(rootLayout);
+        primaryStage.setScene(scene);
 
-            // Give the controller access to the main app.
-            RootLayoutController controller = loader.getController();
-            controller.setMainApp(this);
+        // Give the controller access to the main app.
+        controller.setMainApp(this);
 
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        primaryStage.show();
 
         // Try to load last opened person file.
         File file = getPersonFilePath();
@@ -110,22 +144,13 @@ public class MainApp extends Application {
      * Shows the person overview inside the root layout.
      */
     public void showPersonOverview() {
-        try {
-            // Load person overview.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/PersonOverview.fxml"));
-            AnchorPane personOverview = loader.load();
+        PersonOverviewController controller = (PersonOverviewController) SpringFXMLLoader.load("/com/instabot/view/PersonOverview.fxml");
+        AnchorPane personOverview = (AnchorPane) controller.getView();
 
-            // Set person overview into the center of root layout.
-            rootLayout.setCenter(personOverview);
+        // Set person overview into the center of root layout.
+        rootLayout.setCenter(personOverview);
 
-            // Give the controller access to the main app.
-            PersonOverviewController controller = loader.getController();
-            controller.setMainApp(this);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        controller.setMainApp(this);
     }
     
     /**
@@ -137,66 +162,50 @@ public class MainApp extends Application {
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showPersonEditDialog(Person person) {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
-            AnchorPane page = loader.load();
+        PersonEditDialogController controller = (PersonEditDialogController) SpringFXMLLoader.load("/com/instabot/view/PersonEditDialog.fxml");
+        AnchorPane page = (AnchorPane) controller.getView();
 
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Edit Person");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
+        // Create the dialog Stage.
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Edit Person");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
 
-            // Set the person into the controller.
-            PersonEditDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setPerson(person);
-            
-            // Set the dialog icon.
-            dialogStage.getIcons().add(new Image("file:resources/images/edit.png"));
+        controller.setDialogStage(dialogStage);
+        controller.setPerson(person);
 
-            // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
+        // Set the dialog icon.
+        dialogStage.getIcons().add(new Image("file:resources/images/edit.png"));
 
-            return controller.isOkClicked();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        // Show the dialog and wait until the user closes it
+        dialogStage.showAndWait();
+
+        return controller.isOkClicked();
     }
     
     /**
      * Opens a dialog to show birthday statistics.
      */
     public void showBirthdayStatistics() {
-        try {
-            // Load the fxml file and create a new stage for the popup.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/BirthdayStatistics.fxml"));
-            AnchorPane page = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Birthday Statistics");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-            
-            // Set the dialog icon.
-            dialogStage.getIcons().add(new Image("file:resources/images/calendar.png"));
+        BirthdayStatisticsController controller = (BirthdayStatisticsController) SpringFXMLLoader.load("/com/instabot/view/BirthdayStatistics.fxml");
+        AnchorPane page = (AnchorPane) controller.getView();
 
-            // Set the persons into the controller.
-            BirthdayStatisticsController controller = loader.getController();
-            controller.setPersonData(personData);
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Birthday Statistics");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
 
-            dialogStage.show();
+        // Set the dialog icon.
+        dialogStage.getIcons().add(new Image("file:resources/images/calendar.png"));
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Set the persons into the controller.
+        controller.setPersonData(personData);
+
+        dialogStage.show();
     }
     
     /**
@@ -236,7 +245,25 @@ public class MainApp extends Application {
             primaryStage.setTitle("AddressApp");
         }
     }
-    
+
+    private void setUserCredentials(final Instagram4j instagram4j) {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        if (instagram4j != null) {
+            prefs.put("userLogin", instagram4j.getUsername());
+            prefs.put("userPassword", instagram4j.getPassword());
+        }
+    }
+
+//    public File getPersonFilePath() {
+//        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+//        String filePath = prefs.get("filePath", null);
+//        if (filePath != null) {
+//            return new File(filePath);
+//        } else {
+//            return null;
+//        }
+//    }
+//
     /**
      * Loads person data from the specified file. The current person data will
      * be replaced.
@@ -308,6 +335,8 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+
+          launch(args);
     }
 }

@@ -1,4 +1,8 @@
 .idea
 *.iml
 target
+bin
+dist
+lib
+.settings
 out
