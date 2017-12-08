@@ -31,6 +31,8 @@ import org.brunocvcunha.instagram4j.Instagram4j;
 
 public class MainApp extends Application {
 
+    private static final String FXML_PATH = "/com/instabot/view/fxml/";
+
     private Stage primaryStage;
     private BorderPane rootLayout;
     private Instagram4j instagram;
@@ -94,7 +96,7 @@ public class MainApp extends Application {
     }
 
     private Instagram4j showUserLogin() {
-        LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load("/com/instabot/view/fxml/LoginDialog.fxml");
+        LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load(FXML_PATH + "LoginDialog.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         // Create the dialog Stage.
@@ -118,7 +120,7 @@ public class MainApp extends Application {
      * person file.
      */
     public void initRootLayout() {
-        RootLayoutController controller = (RootLayoutController) SpringFXMLLoader.load("/com/instabot/view/fxml/RootLayout.fxml");
+        RootLayoutController controller = (RootLayoutController) SpringFXMLLoader.load(FXML_PATH + "RootLayout.fxml");
         rootLayout = (BorderPane) controller.getView();
 
         // Show the scene containing the root layout.
@@ -141,7 +143,7 @@ public class MainApp extends Application {
      * Shows the person overview inside the root layout.
      */
     public void showPersonOverview() {
-        PersonOverviewController controller = (PersonOverviewController) SpringFXMLLoader.load("/com/instabot/view/fxml/PersonOverview.fxml");
+        PersonOverviewController controller = (PersonOverviewController) SpringFXMLLoader.load(FXML_PATH + "PersonOverview.fxml");
         AnchorPane personOverview = (AnchorPane) controller.getView();
 
         // Set person overview into the center of root layout.
@@ -159,7 +161,7 @@ public class MainApp extends Application {
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showPersonEditDialog(Person person) {
-        PersonEditDialogController controller = (PersonEditDialogController) SpringFXMLLoader.load("/com/instabot/view/fxml/PersonEditDialog.fxml");
+        PersonEditDialogController controller = (PersonEditDialogController) SpringFXMLLoader.load(FXML_PATH + "PersonEditDialog.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         // Create the dialog Stage.
@@ -186,7 +188,7 @@ public class MainApp extends Application {
      * Opens a dialog to show birthday statistics.
      */
     public void showBirthdayStatistics() {
-        BirthdayStatisticsController controller = (BirthdayStatisticsController) SpringFXMLLoader.load("/com/instabot/view/fxml/BirthdayStatistics.fxml");
+        BirthdayStatisticsController controller = (BirthdayStatisticsController) SpringFXMLLoader.load(FXML_PATH + "BirthdayStatistics.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         Stage dialogStage = new Stage();

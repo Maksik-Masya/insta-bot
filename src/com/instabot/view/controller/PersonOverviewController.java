@@ -1,6 +1,5 @@
 package com.instabot.view.controller;
 
-import com.instabot.view.controller.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

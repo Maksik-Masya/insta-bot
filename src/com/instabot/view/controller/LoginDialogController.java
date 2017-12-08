@@ -1,6 +1,5 @@
 package com.instabot.view.controller;
 
-import com.instabot.view.controller.AbstractController;
 import com.instabot.service.LoginService;
 import com.instabot.service.PreferencesService;
 import javafx.fxml.FXML;
