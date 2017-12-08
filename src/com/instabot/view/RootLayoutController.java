@@ -2,7 +2,7 @@ package com.instabot.view;
 
 import java.io.File;
 
-import com.instabot.config.AbstractController;
+import com.instabot.controller.AbstractController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

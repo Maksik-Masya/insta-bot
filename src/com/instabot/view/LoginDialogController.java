@@ -1,9 +1,11 @@
 package com.instabot.view;
 
-import com.instabot.config.AbstractController;
+import com.instabot.controller.AbstractController;
 import com.instabot.service.LoginService;
+import com.instabot.service.PreferencesService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -11,9 +13,6 @@ import org.brunocvcunha.instagram4j.Instagram4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Maxym Borodenko
- */
 @Component
 public class LoginDialogController extends AbstractController {
 
@@ -21,12 +20,16 @@ public class LoginDialogController extends AbstractController {
     private TextField loginField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private CheckBox checkBox;
+
+    @Autowired
+    private PreferencesService preferencesService;
 
     @Autowired
     private LoginService loginService;
 
     private Stage dialogStage;
-    private boolean okClicked = false;
     private Instagram4j instagram;
 
 
@@ -37,6 +40,12 @@ public class LoginDialogController extends AbstractController {
      */
     public void setDialogStage(final Stage dialogStage) {
         this.dialogStage = dialogStage;
+
+        if (preferencesService.get(PreferencesService.SAVE_CREDENTIALS) != null) {
+            loginField.setText(preferencesService.get(PreferencesService.USER_USERNAME));
+            passwordField.setText(preferencesService.get(PreferencesService.USER_PASSWORD));
+            checkBox.setSelected(true);
+        }
     }
 
     /**
@@ -56,19 +65,28 @@ public class LoginDialogController extends AbstractController {
             final String password = passwordField.getText();
             this.instagram = loginService.login(username, password);
             if (this.instagram != null) {
-                okClicked = true;
+                if (checkBox.isSelected()) {
+                    preferencesService.save(PreferencesService.USER_USERNAME, loginField.getText());
+                    preferencesService.save(PreferencesService.USER_PASSWORD, passwordField.getText());
+                } else {
+                    preferencesService.save(PreferencesService.USER_USERNAME, null);
+                    preferencesService.save(PreferencesService.USER_PASSWORD, null);
+                }
                 dialogStage.close();
             }
         }
     }
 
     /**
-     * Returns true if the user clicked OK, false otherwise.
-     *
-     * @return
+     * Called when the user clicks on checkbox.
      */
-    public boolean isOkClicked() {
-        return okClicked;
+    @FXML
+    private void handleCheckBox() {
+        if (checkBox.isSelected()) {
+            preferencesService.save(PreferencesService.SAVE_CREDENTIALS, "true");
+        } else {
+            preferencesService.save(PreferencesService.SAVE_CREDENTIALS, null);
+        }
     }
 
     /**

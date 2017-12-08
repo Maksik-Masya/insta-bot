@@ -5,6 +5,7 @@ import java.util.prefs.Preferences;
 
 import com.instabot.config.ApplicationConfig;
 import com.instabot.config.SpringFXMLLoader;
+import com.instabot.service.PreferencesService;
 import com.instabot.view.LoginDialogController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -38,7 +39,8 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    
+    private Instagram4j instagram;
+
     /**
      * The data as an observable list of Persons.
      */
@@ -80,7 +82,7 @@ public class MainApp extends Application {
 
         showPersonOverview();
 //
-        Instagram4j instagram = loginUser();
+         instagram = showUserLogin();
 
 //        if (instagram != null) {
 //            setUserCredentials(instagram);
@@ -97,7 +99,7 @@ public class MainApp extends Application {
 //        }
     }
 
-    private Instagram4j loginUser() {
+    private Instagram4j showUserLogin() {
         LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load("/com/instabot/view/LoginDialog.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
@@ -106,6 +108,7 @@ public class MainApp extends Application {
         dialogStage.setTitle("Login User");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
+        dialogStage.setResizable(false);
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
         controller.setDialogStage(dialogStage);

@@ -1,4 +1,4 @@
-package com.instabot.config;
+package com.instabot.controller;
 
 import javafx.scene.Node;
 

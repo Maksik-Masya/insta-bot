@@ -5,10 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-/**
- * @author Maxym Borodenko
- */
-
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -18,7 +14,7 @@ public class LoginServiceImpl implements LoginService {
         instagram.setup();
         try {
             instagram.login();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             return null;
         }
         return instagram;

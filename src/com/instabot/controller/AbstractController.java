@@ -1,4 +1,4 @@
-package com.instabot.config;
+package com.instabot.controller;
 
 import javafx.scene.Node;
 
@@ -9,7 +9,7 @@ public abstract class AbstractController implements Controller {
         return view;
     }
 
-    public void setView (Node view){
+    public void setView (final Node view){
         this.view = view;
     }
 }
