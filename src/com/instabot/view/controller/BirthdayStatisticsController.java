@@ -1,11 +1,11 @@
-package com.instabot.view;
+package com.instabot.view.controller;
 
 import java.text.DateFormatSymbols;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.instabot.controller.AbstractController;
+import com.instabot.view.controller.AbstractController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

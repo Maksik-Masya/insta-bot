@@ -1,5 +1,6 @@
-package com.instabot.controller;
+package com.instabot.view.controller;
 
+import com.instabot.view.controller.Controller;
 import javafx.scene.Node;
 
 public abstract class AbstractController implements Controller {

@@ -1,5 +1,6 @@
-package com.instabot.service;
+package com.instabot.service.impl;
 
+import com.instabot.service.LoginService;
 import org.brunocvcunha.instagram4j.Instagram4j;
 import org.springframework.stereotype.Service;
 

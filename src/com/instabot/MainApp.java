@@ -3,10 +3,8 @@ package com.instabot;
 import java.io.File;
 import java.util.prefs.Preferences;
 
-import com.instabot.config.ApplicationConfig;
 import com.instabot.config.SpringFXMLLoader;
-import com.instabot.service.PreferencesService;
-import com.instabot.view.LoginDialogController;
+import com.instabot.view.controller.LoginDialogController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,15 +23,11 @@ import javax.xml.bind.Unmarshaller;
 
 import com.instabot.model.Person;
 import com.instabot.model.PersonListWrapper;
-import com.instabot.view.BirthdayStatisticsController;
-import com.instabot.view.PersonEditDialogController;
-import com.instabot.view.PersonOverviewController;
-import com.instabot.view.RootLayoutController;
+import com.instabot.view.controller.BirthdayStatisticsController;
+import com.instabot.view.controller.PersonEditDialogController;
+import com.instabot.view.controller.PersonOverviewController;
+import com.instabot.view.controller.RootLayoutController;
 import org.brunocvcunha.instagram4j.Instagram4j;
-import org.brunocvcunha.instagram4j.requests.InstagramSearchUsernameRequest;
-import org.brunocvcunha.instagram4j.requests.payload.InstagramSearchUsernameResult;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MainApp extends Application {
 
@@ -100,7 +94,7 @@ public class MainApp extends Application {
     }
 
     private Instagram4j showUserLogin() {
-        LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load("/com/instabot/view/LoginDialog.fxml");
+        LoginDialogController controller = (LoginDialogController) SpringFXMLLoader.load("/com/instabot/view/fxml/LoginDialog.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         // Create the dialog Stage.
@@ -124,7 +118,7 @@ public class MainApp extends Application {
      * person file.
      */
     public void initRootLayout() {
-        RootLayoutController controller = (RootLayoutController) SpringFXMLLoader.load("/com/instabot/view/RootLayout.fxml");
+        RootLayoutController controller = (RootLayoutController) SpringFXMLLoader.load("/com/instabot/view/fxml/RootLayout.fxml");
         rootLayout = (BorderPane) controller.getView();
 
         // Show the scene containing the root layout.
@@ -147,7 +141,7 @@ public class MainApp extends Application {
      * Shows the person overview inside the root layout.
      */
     public void showPersonOverview() {
-        PersonOverviewController controller = (PersonOverviewController) SpringFXMLLoader.load("/com/instabot/view/PersonOverview.fxml");
+        PersonOverviewController controller = (PersonOverviewController) SpringFXMLLoader.load("/com/instabot/view/fxml/PersonOverview.fxml");
         AnchorPane personOverview = (AnchorPane) controller.getView();
 
         // Set person overview into the center of root layout.
@@ -165,7 +159,7 @@ public class MainApp extends Application {
      * @return true if the user clicked OK, false otherwise.
      */
     public boolean showPersonEditDialog(Person person) {
-        PersonEditDialogController controller = (PersonEditDialogController) SpringFXMLLoader.load("/com/instabot/view/PersonEditDialog.fxml");
+        PersonEditDialogController controller = (PersonEditDialogController) SpringFXMLLoader.load("/com/instabot/view/fxml/PersonEditDialog.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         // Create the dialog Stage.
@@ -192,7 +186,7 @@ public class MainApp extends Application {
      * Opens a dialog to show birthday statistics.
      */
     public void showBirthdayStatistics() {
-        BirthdayStatisticsController controller = (BirthdayStatisticsController) SpringFXMLLoader.load("/com/instabot/view/BirthdayStatistics.fxml");
+        BirthdayStatisticsController controller = (BirthdayStatisticsController) SpringFXMLLoader.load("/com/instabot/view/fxml/BirthdayStatistics.fxml");
         AnchorPane page = (AnchorPane) controller.getView();
 
         Stage dialogStage = new Stage();
@@ -338,8 +332,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-
           launch(args);
     }
 }

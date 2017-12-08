@@ -1,5 +1,6 @@
-package com.instabot.service;
+package com.instabot.service.impl;
 
+import com.instabot.service.PreferencesService;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

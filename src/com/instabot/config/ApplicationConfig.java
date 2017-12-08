@@ -1,9 +1,9 @@
 package com.instabot.config;
 
 import com.instabot.service.LoginService;
-import com.instabot.service.LoginServiceImpl;
+import com.instabot.service.impl.LoginServiceImpl;
 import com.instabot.service.PreferencesService;
-import com.instabot.service.PreferencesServiceImpl;
+import com.instabot.service.impl.PreferencesServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

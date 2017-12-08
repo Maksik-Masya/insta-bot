@@ -1,6 +1,6 @@
 package com.instabot.config;
 
-import com.instabot.controller.Controller;
+import com.instabot.view.controller.Controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.apache.log4j.Logger;
